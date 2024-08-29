@@ -1,0 +1,56 @@
+{
+    "name": "eoion",
+    "version": "1.0.0",
+    "description": "A versatile state management library that integrates seamlessly with React.",
+    "main": "./src/module.js",
+    "module": "./src/module.js",
+    "browser": "./src/module.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack --mode production",
+        "start": "webpack serve --mode development --open",
+        "lint": "eslint ./src",
+        "format": "prettier --write ./src"
+    },
+    "files": [
+        "src"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DevBash1/eoion.git"
+    },
+    "keywords": [
+        "state management",
+        "react",
+        "hooks",
+        "state",
+        "persistent state",
+        "eoion"
+    ],
+    "author": "Dev Bash <ikorosamuel1@gmail.com> (https://github.com/DevBash1)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/DevBash1/eoion/issues"
+    },
+    "homepage": "https://github.com/DevBash1/eoion#readme",
+    "dependencies": {
+        "react": "^18.3.1"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.9.1",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-loader": "^9.1.2",
+        "babel-preset-react": "^6.24.1",
+        "eslint": "^8.57.0",
+        "eslint-plugin-react": "^7.35.0",
+        "globals": "^15.9.0",
+        "prettier": "^3.0.3",
+        "webpack": "^5.88.0",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.0"
+    },
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
+    }
+}
