@@ -239,11 +239,24 @@ With `eoion`, you can focus on building your application rather than managing co
 
 ### Basic React Example
 
+store.js
+
+```javascript
+import { createStore } from "eoion";
+
+const store = createStore("mystore", {
+    count: 10,
+});
+
+export default store;
+```
+
+app.js
+
 ```javascript
 import React from "react";
-import { createStore, useStore } from "eoion";
-
-const store = createStore({ count: 0 });
+import { useStore } from "eoion";
+import store from "store.js";
 
 function Counter() {
     const [count, setCount] = useStore(store.subscribe("count"));
@@ -261,11 +274,24 @@ export default Counter;
 
 ### Persistent State Example
 
+store.js
+
+```javascript
+import { createPersistentStore } from "eoion";
+
+const store = createPersistentStore("mystore", {
+    count: 10,
+});
+
+export default store;
+```
+
+app.js
+
 ```javascript
 import React from "react";
-import { createPersistentStore, useStore } from "eoion";
-
-const persistentStore = createPersistentStore("counterStore", { count: 0 });
+import { useStore } from "eoion";
+import persistentStore from "store.js";
 
 function PersistentCounter() {
     const [count, setCount] = useStore(persistentStore.subscribe("count"));
@@ -283,9 +309,11 @@ export default PersistentCounter;
 
 ### Using Reducers Example
 
+store.js
+
 ```javascript
-import React from "react";
-import { createPersistentStore, useStore } from "eoion";
+import { createPersistentStore } from "eoion";
+import store from "store.js";
 
 const store = createPersistentStore("reducerStore", { count: 0 });
 
@@ -299,6 +327,14 @@ store.reducer("count").set((state, action) => {
             return state;
     }
 });
+
+export default store;
+```
+
+```javascript
+import React from "react";
+import { useStore } from "eoion";
+import store from "store.js";
 
 function CounterWithReducer() {
     const [count] = useStore(store.subscribe("count"));
