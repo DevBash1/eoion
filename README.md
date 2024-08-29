@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://tmpfiles.org/dl/11955587/icon.png" />
+  <img src="https://raw.githubusercontent.com/DevBash1/eoion/main/logo.png" />
   <h1>eoion</h1>
   
   <p>
