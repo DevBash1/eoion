@@ -101,6 +101,138 @@ or
 yarn add eoion
 ```
 
+<!-- Why use? -->
+
+## :question: Why Use Eoion?
+
+When compared to other state management solutions like Redux, `eoion` stands out for its simplicity and ease of use, especially for developers who want to avoid complex boilerplate and setup.
+
+### Key Advantages:
+
+### 1. **Minimal Boilerplate**
+
+With `eoion`, you can create and use a store with just a few lines of code, unlike Redux, which requires setting up actions, reducers, and a store.
+
+**Example:**
+
+```javascript
+import { createStore, useStore } from "eoion";
+
+const store = createStore({ count: 0 });
+
+function Counter() {
+    const [count, setCount] = useStore(store.subscribe("count"));
+
+    return (
+        <div>
+            <p>{count}</p>
+            <button onClick={() => setCount(count + 1)}>Increment</button>
+        </div>
+    );
+}
+```
+
+In contrast, Redux would require defining actions, action creators, reducers, and connecting the component.
+
+### 2. **Easy Integration with React**
+
+The `useStore` hook makes it simple to connect your components to the store without any extra setup.
+
+**Example:**
+
+```javascript
+import React from "react";
+import { createStore, useStore } from "eoion";
+
+const store = createStore({ theme: "light" });
+
+function ThemeToggler() {
+    const [theme, setTheme] = useStore(store.subscribe("theme"));
+
+    return (
+        <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+            Toggle Theme
+        </button>
+    );
+}
+```
+
+No need for `mapStateToProps` or `connect` like in Redux—just use the state directly in your component.
+
+### 3. **Flexibility**
+
+`eoion` supports custom validators, persistent state, and reducers, offering a versatile solution while keeping things simple.
+
+**Custom Validator Example:**
+
+```javascript
+const validator = (state, value) => {
+    if (state === "age" && (value < 0 || value > 120)) {
+        console.error("Invalid age value!");
+        return false;
+    }
+    return true;
+};
+
+const store = createStore({ age: 25 }, validator);
+```
+
+This level of customization is available without any additional libraries or complex configurations.
+
+### 4. **Performance**
+
+`eoion` is designed with performance in mind, ensuring efficient state updates and avoiding unnecessary re-renders.
+
+**Example:**
+
+```javascript
+store.reducer("count").set((state, action) => {
+    switch (action.type) {
+        case "INCREMENT":
+            return state + 1;
+        case "DECREMENT":
+            return state - 1;
+        default:
+            return state;
+    }
+});
+
+function CounterWithReducer() {
+    const [count] = useStore(store.subscribe("count"));
+
+    return (
+        <div>
+            <p>{count}</p>
+            <button
+                onClick={() =>
+                    store.reducer("count").dispatch({ type: "INCREMENT" })
+                }
+            >
+                Increment
+            </button>
+        </div>
+    );
+}
+```
+
+### 5. **Small Learning Curve**
+
+The straightforward API of `eoion` makes it easy to learn, especially for developers who are familiar with React hooks.
+
+**Example:**
+
+```javascript
+const store = createStore({ message: "Hello, World!" });
+
+function MessageDisplay() {
+    const [message] = useStore(store.subscribe("message"));
+
+    return <p>{message}</p>;
+}
+```
+
+With `eoion`, you can focus on building your application rather than managing complex state logic.
+
 <!-- Usage -->
 
 ## :eyes: Usage
