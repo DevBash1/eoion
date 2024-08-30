@@ -1,2 +1,6 @@
 node_modules
 package-lock.json
+icon.png
+logo.png
+.gitignore
+eslint.config.mjs
