@@ -244,7 +244,7 @@ store.js
 ```javascript
 import { createStore } from "eoion";
 
-const store = createStore("mystore", {
+const store = createStore({
     count: 10,
 });
 
