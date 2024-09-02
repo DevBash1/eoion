@@ -486,7 +486,7 @@ export default UserProfile;
 ### Eoion vs. Redux
 
 -   **Learning Curve:** Eoion is much easier to learn and use compared to Redux, which requires understanding concepts like actions, reducers, and middleware.
--   **Boilerplate:** Eoion requires significantly less boilerplate, making it faster to set up and use.
+-   **Boilerplate**: Eoion is much simpler to set up and requires significantly less boilerplate than Redux, making it easier for developers to start using it in their projects.
 -   **State Persistence:** Eoion offers built-in persistent state management without the need for external libraries.
 
 ### Eoion vs. Context API
@@ -499,13 +499,15 @@ export default UserProfile;
 
 -   **Simplicity:** Eoion focuses on simplicity and ease of use, similar to Zustand, but with built-in support for reducers and state persistence.
 -   **API Structure:** Eoion provides a more structured API, making it easier to manage complex state and reducers.
--   **React Integration:** Eoion’s `useStore` hook offers a familiar and intuitive way to integrate state management into React components.
+-   **State Management**: Both Eoion and Zustand offer flexible state management, but Eoion provides a more React-centric API with its `useStore` hook.
 
 ### Eoion vs. Recoil
 
 -   **Learning Curve:** Eoion is easier to learn and use compared to Recoil, which has a steeper learning curve due to its more complex API.
 -   **Flexibility:** Eoion provides flexibility with custom validators and methods, while Recoil is more opinionated in its approach to state management.
 -   **State Persistence:** Eoion offers state persistence out-of-the-box, whereas Recoil requires additional setup or third-party libraries for persistence.
+-   **State Structure**: Eoion offers a flexible state structure without the need for atoms and selectors, unlike Recoil, which uses these concepts heavily.
+-   **Async State Management**: Recoil has built-in async selectors, whereas Eoion keeps async management simple with React hooks.
 
 ---
 
@@ -523,7 +525,10 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Contact
 
-For any inquiries or issues, you can reach out via [email](mailto:ikorosamuel1@gmail.com) or connect with me on [Twitter](https://twitter.com/DevBash1).
+For more information or support, feel free to reach out:
+
+-   **Email**: [ikorosamuel1@gmail.com](mailto:ikorosamuel1@gmail.com)
+-   **Twitter**: [@DevBash1](https://twitter.com/DevBash1)
 
 ---
 
