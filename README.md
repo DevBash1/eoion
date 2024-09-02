@@ -47,6 +47,7 @@
 -   [Examples](#examples)
     -   [Counter Example](#counter-example)
     -   [Theme Toggler Example](#theme-toggler-example)
+    -   [Asynchronous Initial State Example](#asynchronous-initial-state-example)
 -   [Comparison with Other Libraries](#comparison-with-other-libraries)
     -   [Eoion vs. Redux](#eoion-vs-redux)
     -   [Eoion vs. Context API](#eoion-vs-context-api)
@@ -287,7 +288,9 @@ store.reducer("count").set((state, action) => {
 });
 ```
 
-**Dispatching Actions:**
+\*\*
+
+Dispatching Actions:\*\*
 
 ```javascript
 store.reducer("count").dispatch({ type: "INCREMENT" });
@@ -355,7 +358,6 @@ import { createStore } from "eoion";
 
 const methods = {
     increment: (value) => value + 1,
-
     decrement: (value) => value - 1,
 };
 
@@ -418,9 +420,68 @@ const ThemeToggler = () => {
 export default ThemeToggler;
 ```
 
+### Asynchronous Initial State Example
+
+**Persistent Store Setup with Async Initialization:**
+
+```javascript
+import { createPersistentStore } from "eoion";
+
+const defaultStore = {
+    user: async () => {
+        // Simulate async data fetching
+        const response = await fetch("/api/user");
+        const data = await response.json();
+        return data;
+    },
+};
+
+const store = createPersistentStore("userStore", defaultStore);
+```
+
+**React Component:**
+
+```javascript
+import React, { useEffect, useState } from "react";
+import { useStore } from "eoion";
+
+const UserProfile = () => {
+    const [user, setUser] = useStore(store.subscribe("user"));
+
+    useEffect(() => {
+        const unsubscribe = store.reducer("user").subscribe((state) => {
+            console.log({ state });
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    if (!user) return <div>Loading...</div>;
+
+    return (
+        <div>
+            <h1>{user.name}</h1>
+            <p>Age: {user.age}</p>
+        </div>
+    );
+};
+
+export default UserProfile;
+```
+
 ---
 
 ## Comparison with Other Libraries
+
+| Feature               | Eoion             | Redux                     | Zustand           | Recoil                   |
+| --------------------- | ----------------- | ------------------------- | ----------------- | ------------------------ |
+| **Ease of Use**       | ⭐⭐⭐⭐⭐        | ⭐⭐⭐                    | ⭐⭐⭐⭐          | ⭐⭐⭐⭐                 |
+| **Boilerplate**       | Minimal           | High                      | Minimal           | Moderate                 |
+| **Bundle Size**       | Very Small        | Moderate                  | Very Small        | Moderate                 |
+| **React Integration** | Seamless          | Requires Additional Setup | Seamless          | Seamless                 |
+| **State Structure**   | Flexible          | Centralized Store         | Flexible          | Atom-based               |
+| **Async State**       | Simple with Hooks | Complex (Thunk/Saga)      | Simple with Hooks | Built-in Async Selectors |
+| **Community Support** | Growing           | Large                     | Growing           | Growing                  |
 
 ### Eoion vs. Redux
 
