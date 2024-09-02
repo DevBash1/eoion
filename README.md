@@ -1,10 +1,11 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/DevBash1/eoion/main/logo.png" />
-  <h1>eoion</h1>
-  
-  <p>
-    A versatile state management library that works seamlessly with React!
-  </p>
+    <h1>eoion</h1>
+
+[![npm version](https://img.shields.io/npm/v/eoion.svg)](https://www.npmjs.com/package/eoion)
+[![license](https://img.shields.io/npm/l/eoion.svg)](https://github.com/DevBash1/eoion/blob/main/LICENSE)
+[![downloads](https://img.shields.io/npm/dt/eoion.svg)](https://www.npmjs.com/package/eoion)
+[![issues](https://img.shields.io/github/issues/DevBash1/eoion.svg)](https://github.com/DevBash1/eoion/issues)
 
 <!-- Badges -->
 <p>
@@ -20,303 +21,260 @@
   <a href="https://github.com/DevBash1/eoion/stargazers">
     <img src="https://img.shields.io/github/stars/DevBash1/eoion" alt="stars" />
   </a>
-  <a href="https://github.com/DevBash1/eoion/issues/">
-    <img src="https://img.shields.io/github/issues/DevBash1/eoion" alt="open issues" />
-  </a>
-  <a href="https://github.com/DevBash1/eoion/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/DevBash1/eoion.svg" alt="license" />
-  </a>
 </p>
-   
-<h4>
-    <a href="https://github.com/DevBash1/eoion/">View Demo</a>
-  <span> · </span>
-    <a href="https://github.com/DevBash1/eoion">Documentation</a>
-  <span> · </span>
-    <a href="https://github.com/DevBash1/eoion/issues/">Report Bug</a>
-  <span> · </span>
-    <a href="https://github.com/DevBash1/eoion/issues/">Request Feature</a>
-  </h4>
 </div>
 
-<br />
+> **Eoion** is a lightweight, flexible, and easy-to-use state management library for React applications. It offers both simple and persistent state management solutions with minimal boilerplate, making it an excellent choice for developers seeking simplicity and efficiency.
 
-<!-- Table of Contents -->
+---
 
-# :notebook_with_decorative_cover: Table of Contents
+## Table of Contents
 
--   [About the Project](#star2-about-the-project)
-    -   [Tech Stack](#space_invader-tech-stack)
-    -   [Features](#dart-features)
--   [Getting Started](#toolbox-getting-started)
-    -   [Installation](#gear-installation)
-    -   [Usage](#eyes-usage)
--   [Contributing](#wave-contributing)
-    -   [Code of Conduct](#scroll-code-of-conduct)
--   [License](#warning-license)
--   [Contact](#handshake-contact)
--   [Acknowledgements](#gem-acknowledgements)
+-   [Features](#features)
+-   [Installation](#installation)
+-   [Getting Started](#getting-started)
+    -   [Creating a Simple Store](#creating-a-simple-store)
+    -   [Creating a Persistent Store](#creating-a-persistent-store)
+    -   [Using the `useStore` Hook](#using-the-usestore-hook)
+-   [API Reference](#api-reference)
+    -   [`createStore`](#createstore)
+    -   [`createPersistentStore`](#createpersistentstore)
+    -   [`useStore`](#usestore)
+    -   [Store Methods](#store-methods)
+    -   [Reducers](#reducers)
+    -   [Custom Validators](#custom-validators)
+    -   [Custom Methods](#custom-methods)
+-   [Examples](#examples)
+    -   [Counter Example](#counter-example)
+    -   [Theme Toggler Example](#theme-toggler-example)
+-   [Comparison with Other Libraries](#comparison-with-other-libraries)
+    -   [Eoion vs. Redux](#eoion-vs-redux)
+    -   [Eoion vs. Context API](#eoion-vs-context-api)
+    -   [Eoion vs. Zustand](#eoion-vs-zustand)
+    -   [Eoion vs. Recoil](#eoion-vs-recoil)
+-   [Contributing](#contributing)
+-   [License](#license)
+-   [Contact](#contact)
 
-<!-- About the Project -->
+---
 
-## :star2: About the Project
+## Features
 
-`eoion` is a lightweight, framework-agnostic state management library that integrates smoothly with React. It allows developers to manage application state efficiently without the need for complex boilerplate.
+-   **Lightweight and Simple:** Minimal setup and easy-to-understand API.
+-   **Flexible State Management:** Supports both simple and persistent stores.
+-   **React Integration:** Seamless integration with React through custom hooks.
+-   **Customizable:** Allows custom validators and methods for enhanced control.
+-   **Reducer Support:** Built-in support for reducers to manage complex state transitions.
+-   **Asynchronous Initial State:** Supports asynchronous functions for initializing state.
+-   **TypeScript Support:** Fully typed for better developer experience.
+-   **No External Dependencies:** Pure JavaScript implementation without any external dependencies.
 
-<!-- TechStack -->
+---
 
-### :space_invader: Tech Stack
+## Installation
 
-This package supports integration with:
-
--   React
-
-<!-- Features -->
-
-### :dart: Features
-
--   Simple API with minimal boilerplate.
--   Efficient and performant.
--   Supports custom validators and initial state.
--   Seamless integration with React.
--   Persistent state management with localStorage support.
-
-<!-- Getting Started -->
-
-## :toolbox: Getting Started
-
-<!-- Installation -->
-
-### :gear: Installation
-
-Install `eoion` via npm or yarn:
+You can install **Eoion** via npm or yarn:
 
 ```bash
+# Using npm
 npm install eoion
-```
 
-or
-
-```bash
+# Using yarn
 yarn add eoion
 ```
 
-<!-- Why use? -->
+---
 
-## :question: Why Use Eoion?
+## Getting Started
 
-When compared to other state management solutions like Redux, `eoion` stands out for its simplicity and ease of use, especially for developers who want to avoid complex boilerplate and setup.
+This section will guide you through the basics of using **Eoion** in your React projects.
 
-### Key Advantages:
-
-### 1. **Minimal Boilerplate**
-
-With `eoion`, you can create and use a store with just a few lines of code, unlike Redux, which requires setting up actions, reducers, and a store.
-
-**Example:**
-
-```javascript
-import { createStore, useStore } from "eoion";
-
-const store = createStore({ count: 0 });
-
-function Counter() {
-    const [count, setCount] = useStore(store.subscribe("count"));
-
-    return (
-        <div>
-            <p>{count}</p>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
-        </div>
-    );
-}
-```
-
-In contrast, Redux would require defining actions, action creators, reducers, and connecting the component.
-
-### 2. **Easy Integration with React**
-
-The `useStore` hook makes it simple to connect your components to the store without any extra setup.
-
-**Example:**
-
-```javascript
-import React from "react";
-import { createStore, useStore } from "eoion";
-
-const store = createStore({ theme: "light" });
-
-function ThemeToggler() {
-    const [theme, setTheme] = useStore(store.subscribe("theme"));
-
-    return (
-        <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-            Toggle Theme
-        </button>
-    );
-}
-```
-
-No need for `mapStateToProps` or `connect` like in Redux—just use the state directly in your component.
-
-### 3. **Flexibility**
-
-`eoion` supports custom validators, persistent state, and reducers, offering a versatile solution while keeping things simple.
-
-**Custom Validator Example:**
-
-```javascript
-const validator = (state, value) => {
-    if (state === "age" && (value < 0 || value > 120)) {
-        console.error("Invalid age value!");
-        return false;
-    }
-    return true;
-};
-
-const store = createStore({ age: 25 }, validator);
-```
-
-This level of customization is available without any additional libraries or complex configurations.
-
-### 4. **Performance**
-
-`eoion` is designed with performance in mind, ensuring efficient state updates and avoiding unnecessary re-renders.
-
-**Example:**
-
-```javascript
-store.reducer("count").set((state, action) => {
-    switch (action.type) {
-        case "INCREMENT":
-            return state + 1;
-        case "DECREMENT":
-            return state - 1;
-        default:
-            return state;
-    }
-});
-
-function CounterWithReducer() {
-    const [count] = useStore(store.subscribe("count"));
-
-    return (
-        <div>
-            <p>{count}</p>
-            <button
-                onClick={() =>
-                    store.reducer("count").dispatch({ type: "INCREMENT" })
-                }
-            >
-                Increment
-            </button>
-        </div>
-    );
-}
-```
-
-### 5. **Small Learning Curve**
-
-The straightforward API of `eoion` makes it easy to learn, especially for developers who are familiar with React hooks.
-
-**Example:**
-
-```javascript
-const store = createStore({ message: "Hello, World!" });
-
-function MessageDisplay() {
-    const [message] = useStore(store.subscribe("message"));
-
-    return <p>{message}</p>;
-}
-```
-
-With `eoion`, you can focus on building your application rather than managing complex state logic.
-
-<!-- Usage -->
-
-## :eyes: Usage
-
-### Basic React Example
-
-store.js
+### Creating a Simple Store
 
 ```javascript
 import { createStore } from "eoion";
 
-const store = createStore({
-    count: 10,
-});
+// Define the initial state
+const defaultStore = {
+    count: 0,
+    user: {
+        name: "John Doe",
+        age: 30,
+    },
+};
 
-export default store;
+// Create the store
+const store = createStore(defaultStore);
 ```
 
-app.js
+### Creating a Persistent Store
+
+A persistent store saves its state to `localStorage`, allowing state persistence across browser sessions.
+
+```javascript
+import { createPersistentStore } from "eoion";
+
+// Define the initial state
+const defaultStore = {
+    theme: "light",
+    language: "en",
+};
+
+// Create the persistent store with a unique ID
+const persistentStore = createPersistentStore("appStore", defaultStore);
+```
+
+### Using the `useStore` Hook
+
+The `useStore` hook connects your React components to the store, providing real-time updates and state management.
 
 ```javascript
 import React from "react";
 import { useStore } from "eoion";
-import store from "store.js";
 
-function Counter() {
+// Assuming you have already created a store
+const Counter = () => {
     const [count, setCount] = useStore(store.subscribe("count"));
+
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
 
     return (
         <div>
-            <p>{count}</p>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
+            <h1>Count: {count}</h1>
+            <button onClick={decrement}>-</button>
+            <button onClick={increment}>+</button>
         </div>
     );
-}
+};
 
 export default Counter;
 ```
 
-### Persistent State Example
+---
 
-store.js
+## API Reference
+
+### `createStore`
+
+Creates a simple, non-persistent store.
+
+**Syntax:**
 
 ```javascript
-import { createPersistentStore } from "eoion";
+createStore(defaultStore, defaultMethods, validator);
+```
 
-const store = createPersistentStore("mystore", {
-    count: 10,
+**Parameters:**
+
+-   `defaultStore` (Object): The initial state of the store.
+-   `defaultMethods` (Object, optional): Custom methods to manipulate the store state.
+-   `validator` (Function, optional): A function to validate state changes.
+
+**Returns:**  
+An object with the following methods:
+
+-   `subscribe(name)`
+-   `reducer(state)`
+-   `getState(name)`
+-   `getStates()`
+
+**Example:**
+
+```javascript
+const store = createStore({
+    isAuthenticated: false,
+    user: null,
 });
-
-export default store;
 ```
 
-app.js
+### `createPersistentStore`
+
+Creates a persistent store that saves its state to `localStorage`.
+
+**Syntax:**
 
 ```javascript
-import React from "react";
-import { useStore } from "eoion";
-import persistentStore from "store.js";
-
-function PersistentCounter() {
-    const [count, setCount] = useStore(persistentStore.subscribe("count"));
-
-    return (
-        <div>
-            <p>{count}</p>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
-        </div>
-    );
-}
-
-export default PersistentCounter;
+createPersistentStore(storeId, defaultStore, defaultMethods, validator);
 ```
 
-### Using Reducers Example
+**Parameters:**
 
-store.js
+-   `storeId` (String): Unique identifier for the store in `localStorage`.
+-   `defaultStore` (Object): The initial state of the store.
+-   `defaultMethods` (Object, optional): Custom methods to manipulate the store state.
+-   `validator` (Function, optional): A function to validate state changes.
+
+**Returns:**  
+An object with the following methods:
+
+-   `subscribe(name)`
+-   `reducer(state)`
+-   `getState(name)`
+-   `getStates()`
+
+**Example:**
 
 ```javascript
-import { createPersistentStore } from "eoion";
-import store from "store.js";
+const persistentStore = createPersistentStore("userStore", {
+    token: null,
+    preferences: {},
+});
+```
 
-const store = createPersistentStore("reducerStore", { count: 0 });
+### `useStore`
 
+Custom React hook to manage and subscribe to store state.
+
+**Syntax:**
+
+```javascript
+useStore(eoion, initialValue);
+```
+
+**Parameters:**
+
+-   `eoion` (Object): The object returned by `store.subscribe(name)`.
+-   `initialValue` (\*, optional): Overrides the store's default value for the subscribed state.
+
+**Returns:**  
+An array `[state, setState]`.
+
+**Example:**
+
+```javascript
+const [theme, setTheme] = useStore(persistentStore.subscribe("theme"), "dark");
+```
+
+### Store Methods
+
+When you subscribe to a state, you get access to several methods:
+
+-   `storeId`: The unique identifier of the store.
+-   `store`: The entire store object.
+-   `onChange(state, value)`: Manually trigger a state change.
+-   `getState(name)`: Get the current value of a specific state.
+-   `getStates()`: Get the current values of all states.
+-   `on(name, callback)`: Add a listener for a specific state update event.
+-   `off(name, callback)`: Remove a listener for a specific state update event.
+
+**Example:**
+
+```javascript
+const eoion = store.subscribe("user");
+
+eoion.on("store-UPDATE-user", (newUser) => {
+    console.log("User updated:", newUser);
+});
+```
+
+### Reducers
+
+Reducers allow you to manage complex state transitions.
+
+**Setting a Reducer:**
+
+```javascript
 store.reducer("count").set((state, action) => {
     switch (action.type) {
         case "INCREMENT":
@@ -327,162 +285,187 @@ store.reducer("count").set((state, action) => {
             return state;
     }
 });
-
-export default store;
 ```
 
+**Dispatching Actions:**
+
 ```javascript
-import React from "react";
-import { useStore } from "eoion";
-import store from "store.js";
-
-function CounterWithReducer() {
-    const [count] = useStore(store.subscribe("count"));
-
-    return (
-        <div>
-            <p>{count}</p>
-            <button
-                onClick={() =>
-                    store.reducer("count").dispatch({ type: "INCREMENT" })
-                }
-            >
-                Increment
-            </button>
-            <button
-                onClick={() =>
-                    store.reducer("count").dispatch({ type: "DECREMENT" })
-                }
-            >
-                Decrement
-            </button>
-        </div>
-    );
-}
-
-export default CounterWithReducer;
+store.reducer("count").dispatch({ type: "INCREMENT" });
 ```
 
-### Reducer Subscription Example
+**Subscribing to Reducer Updates:**
 
 ```javascript
-import React from "react";
-import { createPersistentStore, useStore } from "eoion";
-
-const store = createPersistentStore("reducerSubscribeStore", { count: 0 });
-
-store.reducer("count").set((state, action) => {
-    switch (action.type) {
-        case "INCREMENT":
-            return state + 1;
-        case "DECREMENT":
-            return state - 1;
-        default:
-            return state;
-    }
+const unsubscribe = store.reducer("count").subscribe((newCount) => {
+    console.log("Count updated:", newCount);
 });
 
-function CounterWithReducerSubscribe() {
-    const [count, setCount] = React.useState(store.getState("count"));
-
-    React.useEffect(() => {
-        const unsubscribe = store.reducer("count").subscribe((state) => {
-            setCount(state);
-        });
-
-        // setCount(store.getState("count"));
-
-        return () => unsubscribe();
-    }, []);
-
-    return (
-        <div>
-            <p>{`Count: ${count}`}</p>
-            <button
-                onClick={() =>
-                    store.reducer("count").dispatch({ type: "INCREMENT" })
-                }
-            >
-                Increment
-            </button>
-            <button
-                onClick={() =>
-                    store.reducer("count").dispatch({ type: "DECREMENT" })
-                }
-            >
-                Decrement
-            </button>
-        </div>
-    );
-}
-
-export default CounterWithReducerSubscribe;
+// To unsubscribe
+unsubscribe();
 ```
 
-### Custom Validator Example
+### Custom Validators
+
+Validators allow you to enforce rules on state changes.
+
+**Example:**
 
 ```javascript
-import React from "react";
-import { createStore, useStore } from "eoion";
-
-const validator = (state, value) => {
-    if (state === "age" && (value < 0 || value > 120)) {
+const validator = (stateName, stateValue) => {
+    if (stateName === "age" && (stateValue < 0 || stateValue > 120)) {
         console.error("Invalid age value!");
         return false;
     }
     return true;
 };
 
-const store = createStore({ age: 25 }, validator);
+const store = createStore({ age: 25 }, {}, validator);
+```
 
-function AgeValidator() {
-    const [age, setAge] = useStore(store.subscribe("age"));
+### Custom Methods
+
+You can define custom methods to manipulate state in a controlled manner.
+
+**Defining Custom Methods:**
+
+```javascript
+const methods = {
+    increment: (value, amount = 1) => value + amount,
+    decrement: (value, amount = 1) => value - amount,
+};
+
+const store = createStore({ count: 0 }, methods);
+
+const counter = store.subscribe("count");
+
+counter.increment(); // Increments count by 1
+counter.decrement(2); // Decrements count by 2
+```
+
+---
+
+## Examples
+
+### Counter Example
+
+**Store Setup:**
+
+```javascript
+import { createStore } from "eoion";
+
+const methods = {
+    increment: (value) => value + 1,
+
+    decrement: (value) => value - 1,
+};
+
+const store = createStore({ count: 0 }, methods);
+```
+
+**React Component:**
+
+```javascript
+import React from "react";
+import { useStore } from "eoion";
+
+const Counter = () => {
+    const [count, setCount] = useStore(store.subscribe("count"));
+
+    const increment = () => setCount(store.increment);
+    const decrement = () => setCount(store.decrement);
 
     return (
         <div>
-            <p>Age: {age}</p>
-            <button onClick={() => setAge(age + 1)}>Increment Age</button>
-            <button onClick={() => setAge(age - 1)}>Decrement Age</button>
+            <h1>Count: {count}</h1>
+            <button onClick={decrement}>-</button>
+            <button onClick={increment}>+</button>
         </div>
     );
-}
+};
 
-export default AgeValidator;
+export default Counter;
 ```
 
-<!-- Contributing -->
+### Theme Toggler Example
 
-## :wave: Contributing
+**Persistent Store Setup:**
 
-Contributions are always welcome!
+```javascript
+import { createPersistentStore } from "eoion";
 
-See `contributing.md` for ways to get started.
+const store = createPersistentStore("themeStore", { theme: "light" });
 
-### :scroll: Code of Conduct
+store.reducer("theme").set((state) => (state === "light" ? "dark" : "light"));
+```
 
-Please read the [Code of Conduct](https://github.com/DevBash1/eoion/blob/main/CODE_OF_CONDUCT.md).
+**React Component:**
 
-<!-- License -->
+```javascript
+import React from "react";
+import { useStore } from "eoion";
 
-## :warning: License
+const ThemeToggler = () => {
+    const [theme, toggleTheme] = useStore(store.subscribe("theme"));
 
-Distributed under the MIT License. See `LICENSE` for more information.
+    return (
+        <div>
+            <h1>Current Theme: {theme}</h1>
+            <button onClick={toggleTheme}>Toggle Theme</button>
+        </div>
+    );
+};
 
-<!-- Contact -->
+export default ThemeToggler;
+```
 
-## :handshake: Contact
+---
 
-Dev Bash - [@DevBash1](https://twitter.com/DevBash1) - ikorosamuel1@gmail.com
+## Comparison with Other Libraries
 
-Project Link: [https://github.com/DevBash1/eoion](https://github.com/DevBash1/eoion)
+### Eoion vs. Redux
 
-<!-- Acknowledgements -->
+-   **Learning Curve:** Eoion is much easier to learn and use compared to Redux, which requires understanding concepts like actions, reducers, and middleware.
+-   **Boilerplate:** Eoion requires significantly less boilerplate, making it faster to set up and use.
+-   **State Persistence:** Eoion offers built-in persistent state management without the need for external libraries.
 
-## :gem: Acknowledgements
+### Eoion vs. Context API
 
--   [Shields.io](https://shields.io/)
--   [Awesome README](https://github.com/matiassingers/awesome-readme)
--   [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#travel--places)
--   [Readme Template](https://github.com/othneildrew/Best-README-Template)
+-   **Ease of Use:** Eoion provides a more straightforward and structured approach to state management compared to the Context API, which can become complex in large applications.
+-   **Reusability:** Eoion’s store methods and custom hooks enhance reusability and separation of concerns.
+-   **Performance:** Eoion’s subscription model can offer better performance in large applications by minimizing unnecessary re-renders.
+
+### Eoion vs. Zustand
+
+-   **Simplicity:** Eoion focuses on simplicity and ease of use, similar to Zustand, but with built-in support for reducers and state persistence.
+-   **API Structure:** Eoion provides a more structured API, making it easier to manage complex state and reducers.
+-   **React Integration:** Eoion’s `useStore` hook offers a familiar and intuitive way to integrate state management into React components.
+
+### Eoion vs. Recoil
+
+-   **Learning Curve:** Eoion is easier to learn and use compared to Recoil, which has a steeper learning curve due to its more complex API.
+-   **Flexibility:** Eoion provides flexibility with custom validators and methods, while Recoil is more opinionated in its approach to state management.
+-   **State Persistence:** Eoion offers state persistence out-of-the-box, whereas Recoil requires additional setup or third-party libraries for persistence.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please check out the [issues](https://github.com/DevBash1/eoion/issues) page to see what needs help.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/DevBash1/eoion/blob/main/LICENSE) file for details.
+
+---
+
+## Contact
+
+For any inquiries or issues, you can reach out via [email](mailto:ikorosamuel1@gmail.com) or connect with me on [Twitter](https://twitter.com/DevBash1).
+
+---
+
+**Eoion** - _Lightweight state management made easy._
 
 ---

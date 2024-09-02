@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 
 /**
@@ -41,6 +42,37 @@ const defaultValidator = (stateName, stateValue) => {
     return true;
 };
 
+const extractStoreDefault = (obj) => {
+    const newObj = {};
+    Object.keys(obj).forEach((key) => {
+        if (typeof obj[key] !== "function") {
+            newObj[key] = obj[key];
+            return;
+        }
+        newObj[key] = undefined;
+    });
+    return newObj;
+};
+
+const resolveDefaultFunction = async (obj) => {
+    const newObj = {};
+    await Promise.all(
+        Object.keys(obj).map(async (key) => {
+            if (typeof obj[key] === "function") {
+                try {
+                    newObj[key] = await obj[key]();
+                } catch (error) {
+                    console.error(error);
+                }
+                return;
+            }
+            return;
+        })
+    );
+
+    return newObj;
+};
+
 /**
  * Creates a store with a unique ID and default state values.
  * @param {Object} defaultStore - An object representing the initial state of the store.
@@ -48,7 +80,11 @@ const defaultValidator = (stateName, stateValue) => {
  * @returns {Object} An object containing methods to manage and subscribe to store changes.
  * @throws Will throw an error if defaultStore is not a non-null object.
  */
-const createStore = (defaultStore = {}, validator = defaultValidator) => {
+const createStore = (
+    defaultStore = {},
+    defaultMethods = {},
+    validator = defaultValidator
+) => {
     if (typeof defaultStore !== "object" || defaultStore === null) {
         throw new Error("Invalid defaultStore: must be a non-null object.");
     }
@@ -57,8 +93,18 @@ const createStore = (defaultStore = {}, validator = defaultValidator) => {
         throw new Error("Invalid validator: must be a function.");
     }
 
-    const storeId = getStoreId();
-    const store = { ...defaultStore };
+    const storeId = "store";
+
+    const extractedDefault = extractStoreDefault(defaultStore);
+    const store = { ...extractedDefault };
+
+    resolveDefaultFunction(defaultStore).then((res) => {
+        Object.keys(res).forEach((each) => {
+            if (store[each] === undefined) {
+                onChange(each, res[each]);
+            }
+        });
+    });
 
     /**
      * Updates the store's state and triggers an event to notify subscribers of the change.
@@ -170,7 +216,20 @@ const createStore = (defaultStore = {}, validator = defaultValidator) => {
             store[name] = undefined;
         }
 
+        const methods = parseMethods(defaultMethods, name, store[name]);
+        const moddedMethods = {};
+
+        Object.keys(methods).forEach((each) => {
+            moddedMethods[each] = (...args) => {
+                const stateValue = store[name];
+
+                const newStateValue = methods[each](stateValue, ...args);
+                onChange(name, newStateValue);
+            };
+        });
+
         return {
+            ...moddedMethods,
             storeId,
             store,
             onChange,
@@ -260,18 +319,55 @@ const createStore = (defaultStore = {}, validator = defaultValidator) => {
     };
 };
 
-/**
- * Creates a store with a unique ID and default state values.
- * The store's state is persisted in localStorage.
- * @param {string} storeId - A unique identifier for the store.
- * @param {Object} defaultStore - An object representing the initial state of the store.
- * @param {Function} validator - A function to validate state changes before they are applied.
- * @returns {Object} An object containing methods to manage and subscribe to store changes.
- * @throws Will throw an error if storeId is not a valid string or defaultStore is not a non-null object.
- */
+const parseMethods = (obj, state, value) => {
+    const data = {
+        state: value,
+    };
+
+    const bindedObj = {};
+
+    const wrapFunction = (func) => {
+        return function (...args) {
+            return func.call(data, ...args);
+        };
+    };
+
+    // Extract and wrap functions from the root object
+    Object.keys(obj).forEach((key) => {
+        if (typeof obj[key] === "function") {
+            if (obj[key].prototype) {
+                // Regular function
+                bindedObj[key] = wrapFunction(obj[key]);
+            } else {
+                // Arrow function
+                bindedObj[key] = (...args) => obj[key].call(data, ...args);
+            }
+        }
+    });
+
+    // If state is provided and obj[state] is an object, extract and wrap its functions
+    if (state && typeof obj[state] === "object") {
+        Object.keys(obj[state]).forEach((key) => {
+            if (typeof obj[state][key] === "function") {
+                if (obj[state][key].prototype) {
+                    // Regular function
+                    bindedObj[key] = wrapFunction(obj[state][key]);
+                } else {
+                    // Arrow function
+                    bindedObj[key] = (...args) =>
+                        obj[state][key].call(data, ...args);
+                }
+            }
+        });
+    }
+
+    return bindedObj;
+};
+
 const createPersistentStore = (
     storeId = getStoreId(),
     defaultStore = {},
+    defaultMethods = {},
     validator = defaultValidator
 ) => {
     if (typeof storeId !== "string" || !storeId) {
@@ -286,7 +382,16 @@ const createPersistentStore = (
         throw new Error("Invalid validator: must be a function.");
     }
 
-    const store = { ...defaultStore };
+    const extractedDefault = extractStoreDefault(defaultStore);
+    const store = { ...extractedDefault };
+
+    resolveDefaultFunction(defaultStore).then((res) => {
+        Object.keys(res).forEach((each) => {
+            if (store[each] === undefined) {
+                onChange(each, res[each]);
+            }
+        });
+    });
 
     // Load store from localStorage
     const storedData = localStorage.getItem(storeId);
@@ -412,9 +517,22 @@ const createPersistentStore = (
             store[name] = undefined;
         }
 
+        const methods = parseMethods(defaultMethods, name, store[name]);
+        const moddedMethods = {};
+
+        Object.keys(methods).forEach((each) => {
+            moddedMethods[each] = (...args) => {
+                const stateValue = store[name];
+
+                const newStateValue = methods[each](stateValue, ...args);
+                onChange(name, newStateValue);
+            };
+        });
+
         return {
             storeId,
             store,
+            ...moddedMethods,
             onChange,
             state: [name, store[name]],
             getState,
@@ -545,7 +663,13 @@ const useStore = (eoion, initialValue) => {
         eoion.onChange(name, state);
     }, [state]);
 
-    return [state, setState];
+    const updateState = (newStateValue) => {
+        const [name] = eoion.state;
+
+        eoion.onChange(name, newStateValue);
+    };
+
+    return [state, updateState];
 };
 
 export { createStore, createPersistentStore, useStore };

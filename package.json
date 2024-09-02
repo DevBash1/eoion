@@ -1,10 +1,11 @@
 {
     "name": "eoion",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A versatile state management library that integrates seamlessly with React.",
     "main": "./src/module.js",
     "module": "./src/module.js",
     "browser": "./src/module.js",
+    "types": "./src/module.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack --mode production",
